@@ -30,6 +30,11 @@ $(function() {
 
     bindSysEvent()
 
+    var hash = window.location.hash;
+    if(hash === '' || hash === '#/') {
+        window.location.hash = '#/page/test1';
+    }
+
 })
 
 
