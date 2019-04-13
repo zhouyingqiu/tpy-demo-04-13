@@ -3,42 +3,32 @@ var globalV = {
     routerSelector: $("#content")
 }
 
-
+// dom加载完成后的初始化函数
 $(function() {
+    // 路由配置项
     var routerOptions = {
         "/page/:pageName": {
             on: mainRouter
         },
-
-
-
     };
-
     var routeInstance = new Router(routerOptions).configure({
         before: function(param = undefined) {
             console.log('before - ' + param);
         },
         after: function(param = undefined) {
             console.log('after - ' + param);
-
-
-            // $(".main-content").scrollTop(0)
         }
     });
-    // routeInstance.init('#/complex');
+
     routeInstance.init();
-
     bindSysEvent()
-
     var hash = window.location.hash;
     if(hash === '' || hash === '#/') {
         window.location.hash = '#/page/test1';
     }
-
 })
 
-
-
+// 主路由回调函数
 function mainRouter(pageName) {
     console.log(pageName)
     var url = 'pages/'+pageName+".html";
@@ -47,7 +37,7 @@ function mainRouter(pageName) {
     loadRouterTemp(url)
 }
 
-
+// 绑定系统默认事件
 function bindSysEvent() {
     $(".menu-wrap li").off("click").on("click", function() {
         // alert(1)
@@ -56,7 +46,7 @@ function bindSysEvent() {
     })
 }
 
-
+// 使用ajax加载html到某个dom元素中
 function loadRouterTemp(url, theContainer) {
     theContainer  = theContainer || globalV.routerSelector;
     theContainer.empty();
