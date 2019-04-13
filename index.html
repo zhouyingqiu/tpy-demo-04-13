@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SPA-DEMO</title>
+</head>
+<style>
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    html,
+    body *{
+        box-sizing: border-box
+    }
+
+    .page-header {
+        height: 60px;
+        background-color: darkcyan
+    }
+
+    .page-section {
+        height: calc(100% - 120px);
+        background-color: #f3f3f3;
+        display: flex;
+    }
+
+    .page-footer {
+        height: 60px;
+        background-color: bisque
+    }
+    .menu-wrap{
+        width: 200px;
+        margin: 0;
+        padding: 12px;
+        background: #ccc;
+        height: 100%;
+    }
+    .menu-wrap> li {
+        height: 40px;
+        line-height: 40px;
+        cursor: pointer;
+    }
+    .menu-wrap> li.active {
+        color: #148dff;
+        cursor: default
+    }
+</style>
+
+<body>
+
+    <header class="page-header">
+
+    </header>
+
+    <section class="page-section">
+            <aside>
+                <ul class="menu-wrap">
+                    <li class="active" data-href="test1">测试菜单1</li>
+                    <li data-href="test2">测试菜单2</li>
+                </ul>
+            </aside>
+            <div id="content">
+
+            </div>
+    </section>
+
+    <footer class="page-footer">
+
+
+    </footer>
+
+    <script src="3rd/js/jquery-3.3.1.min.js"></script>
+    <script src="3rd/js/director.min.js"></script>
+    <script src="3rd/js/template.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
