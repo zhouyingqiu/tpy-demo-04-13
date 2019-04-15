@@ -1,0 +1,176 @@
+<style>
+.flex {
+    display: flex;
+}
+.flex-1 {
+    flex: 1;
+}
+.flex-auto {
+    flex: auto
+}
+.flex-ver  {
+    flex-direction: column;
+    display: flex
+}
+
+.wether-wrap {
+    padding: 4px 6px 24px;
+    background: #232323;
+    color: #f3f3f3;
+}
+.wether-wrap .notice * {
+    font-size: 12px;
+}
+</style>
+
+
+<div id="weather_wrap" class="wether-wrap">
+
+</div>
+
+
+
+<script type="text/html" id="_tpl_weather">
+    <div class="flex " style="    padding-top: 14px;
+    justify-content: space-evenly;
+    flex-grow: 1;
+    margin: 24px 0 20px;">
+        <div class="flex">
+            <span style="color: #0094E1;font-size: 60px;">
+                    {{current.condition.temp}}
+            </span>
+            <span style="font-size: 40px;color: #0094E1;padding-top: 4px;">°</span>
+        </div>
+
+        <div class="notice">
+            <div style="    background: {{current.condition.qul.color}};
+            display: inline-block;
+            padding: 0 4px;margin: 7px 0">
+                    空气质量{{current.condition.qul.desc}}
+            </div>
+            <div style="opacity: 0.7;margin-bottom: 6px">
+                <span>
+                    {{current.condition.condition}}
+                </span>
+                &nbsp;
+                &nbsp;
+                <span>
+                        {{notice[0].tempNight}}℃ ~
+                        {{notice[0].tempDay}}℃
+                </span>
+            </div>
+            <div style="opacity: 0.7;margin-bottom: 6px;">
+                <span>
+                    {{current.condition.windDir}}
+                </span>
+                <span>
+                    {{current.condition.windLevel}}
+                </span>
+                级
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                湿度
+                <span>
+                        {{current.condition.humidity}}
+                </span>
+                %
+            </div>
+        </div>
+
+        <div style="padding-top: 12px;opacity: 0.9;">
+            <img src="./images/weather-icon/W{{current.condition.icon}}.png" alt="">
+        </div>
+    </div>
+    <div style="height: 92px;margin-top: 8px;padding: 0 6px;align-items: center" class="flex notice">
+        {{each notice as not i}}
+            <div  class="flex" style="width: 77px;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;{{ i == 0 ? '' : 'opacity: 0.7'}}">
+                {{if i == 0}}
+                    <div>
+                        今天
+                    </div>
+                {{else}}
+                  <div>
+                        {{format('{"type": "format_week"}', not.predictDate)}}
+                    </div>
+                {{/if}}
+                  <div>
+                          {{format('{"type": "timestring", "format":"MM.dd"}', not.predictDate)}}
+                  </div>
+                  <div style="padding: 6px 0 4px;opacity: 0.9;">
+                      <img src="./images/weather-icon/W{{not.conditionIdDay}}.png" style="width: 20px;" alt="">
+                  </div>
+                  <div>
+                          <span>
+                                  {{not.tempNight}}° ~
+                                  {{not.tempDay}}°
+                          </span>
+                  </div>
+            </div>
+        {{/each}}
+    </div>
+  </script>
+
+
+<script>
+
+
+    getWeateherInfo();
+
+    // 获取天气
+    function getWeateherInfo() {
+        $.getJSON('./json/weather.json', function (data) {
+
+            data.today.condition.qul = getAirQul(data.today.air_qul.value);
+            var html = template("_tpl_weather", {
+                current: data.today,
+                notice: data.list.forecast
+            });
+            $("#weather_wrap").html(html);
+        });
+    }
+
+    function getAirQul(score) {
+       
+
+        if (!score) return "";
+        var qulTable = {
+            1: {
+                color: "#549B23",
+                desc: "优"
+            }, // 50
+            2: {
+                color: "#549B23",
+                desc: "良"
+            }, // 100
+            3: {
+                color: "#995B23",
+                desc: "轻度污染"
+            },
+            4: {
+                color: "#995B23",
+                desc: "轻度污染"
+            }, // 200
+            5: {
+                color: "#991F23",
+                desc: "中度污染"
+            },
+            6: {
+                color: "#991F23",
+                desc: "中度污染"
+            }, // 300
+            other: {
+                color: "#991F23",
+                desc: "重度污染"
+            }
+        };
+        return qulTable[Math.ceil(score / 50)]   || table["others"];
+    }
+
+
+
+
+</script>
